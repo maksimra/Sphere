@@ -3,21 +3,36 @@
 
 #include <stdint.h>
 
-static const size_t SIZE_ONE_COLOR = 3;
+static const size_t SIZE_ONE_COLOR = 4;
 
 class Lighting
 {
-    int x;
-    int y;
-    const uint8_t* color;
-    uint8_t brightness;
+    int x_;
+    int y_;
+    int z_;
+    int color_;
 public:
-    Lighting (int x, int y, uint8_t brightness, const uint8_t* color):
-              x (x), y (y), brightness (brightness), color (color) {}
+    Lighting (int x, int y, int z, int color):
+              x_ (x), y_ (y), z_ (z), color_ (color) {}
 
-    void set_volume (uint8_t new_brightness)
+    int get_x () const
     {
-        brightness = new_brightness;
+        return x_;
+    }
+
+    int get_y () const
+    {
+        return y_;
+    }
+
+    int get_z () const
+    {
+        return z_;
+    }
+
+    int get_color () const
+    {
+        return color_;
     }
 };
 

@@ -10,44 +10,35 @@ enum VectorMode
     VECTOR_MODE_POLAR     = 2
 };
 
-class Vector2
+class Vector3
 {
-    enum VectorMode cur_mode;
     double x;
     double y;
-    double angle;
-    double length;
+    double z;
 
 public:
-    Vector2 (double first_value, double second_value):
-             cur_mode (VECTOR_MODE_CARTESIAN), x (first_value),    y (second_value),
-             angle (0),                        length (0)          {}
+    Vector3 (double first_value, double second_value, double third_value):
+             x (first_value), y (second_value), z (third_value) {}
 
-    Vector2 (const Vector2& vector):
-             cur_mode (vector.cur_mode), x (vector.x), y (vector.y),
-             angle (vector.angle), length (vector.length) {}
+    Vector3 (const Vector3& vector):
+             x (vector.x), y (vector.y), z (vector.z){}
 
-    Vector2 ():
-             cur_mode (VECTOR_MODE_CARTESIAN), x (0), y (0),
-             angle    (0),                     length (0) {}
+    Vector3 ():
+             x (0), y (0), z (0) {}
 
-    Vector2 operator+= (Vector2 additional_vector);
-    Vector2 operator-= (Vector2 additional_vector);
-    Vector2 operator/  (int divider);
-    void    operator=  (const Vector2& source_vector);
+    Vector3  operator+= (Vector3 additional_vector);
+    Vector3  operator-= (Vector3 additional_vector);
+    Vector3  operator/  (double divider);
+    Vector3& operator=  (const Vector3& source_vector);
 
-    double     get_angle  ();
-    double     get_length ();
-    VectorMode get_vector_mode ();
-
-    Vector2 rotate (double alpha);
-
-    void upload_cartesian_mode ();
-    void upload_polar_mode     ();
+    double get_length () const;
+    double get_x () const;
+    double get_y () const;
+    double get_z () const;
 };
 
-Vector2 operator+             (Vector2 vector_1, Vector2 vector_2);
-Vector2 operator-             (Vector2 vector_1, Vector2 vector_2);
-Vector2 get_perpendicular     (Vector2 vector);
+Vector3 operator+         (Vector3 vector_1, Vector3 vector_2);
+Vector3 operator-         (Vector3 vector_1, Vector3 vector_2);
+double  get_cos_between   (const Vector3& vector1, const Vector3& vector2);
 
 #endif // VECTOR_HPP

@@ -1,59 +1,39 @@
 #include "../include/vector.hpp"
-
-#define ANGLE_IN_RAD(angle) 2 * PI / NUM_OF_DEGREES_IN_CIRCLE * angle
+#include "../include/compare_doubles.hpp"
+#include <math.h>
 
 const int    NUM_OF_DEGREES_IN_CIRCLE      = 360;
 const int    NUM_OF_DEGREES_IN_RIGHT_ANGLE = 90;
 const double PI                            = 3.14;
 const int    COEFF_FOR_LENGTH_ARROWS       = 10;
 
-void Vector2::operator= (const Vector2& source_vector)
+Vector3& Vector3::operator= (const Vector3& source_vector)
 {
-    cur_mode = source_vector.cur_mode;
     x = source_vector.x;
     y = source_vector.y;
-    angle = source_vector.angle;
-    length = source_vector.length;
+    z = source_vector.z;
+    return *this;
 }
 
-Vector2 Vector2::operator+= (Vector2 additional_vector)
+Vector3 Vector3::operator+= (Vector3 additional_vector)
 {
-    if (cur_mode != VECTOR_MODE_CARTESIAN)
-    {
-        this->upload_cartesian_mode ();
-        cur_mode = VECTOR_MODE_CARTESIAN;
-    }
     x += additional_vector.x;
     y += additional_vector.y;
+    z += additional_vector.z;
 
     return *this;
 }
 
-Vector2 Vector2::operator-= (Vector2 additional_vector)
+Vector3 Vector3::operator-= (Vector3 additional_vector)
 {
-    if (cur_mode != VECTOR_MODE_CARTESIAN)
-    {
-        this->upload_cartesian_mode ();
-        cur_mode = VECTOR_MODE_CARTESIAN;
-    }
     x -= additional_vector.x;
     y -= additional_vector.y;
+    z -= additional_vector.z;
 
     return *this;
 }
 
-Vector2 Vector2::rotate (double alpha)
-{
-    if (cur_mode != VECTOR_MODE_POLAR)
-    {
-        this->upload_polar_mode ();
-        cur_mode = VECTOR_MODE_POLAR;
-    }
-    angle = (int)(angle - alpha) % NUM_OF_DEGREES_IN_CIRCLE;
-    return *this;
-}
-
-// void Vector2::draw (sf::RenderWindow& window, double x_begin, double y_begin, size_t x_size_of_window, size_t y_size_of_window)
+// void Vector3::draw (sf::RenderWindow& window, double x_begin, double y_begin, size_t x_size_of_window, size_t y_size_of_window)
 // {
 //     float changed_x = (float) recalcul_x (x, x_size_of_window);
 //     float changed_y = (float) recalcul_y (y, y_size_of_window);
@@ -68,14 +48,14 @@ Vector2 Vector2::rotate (double alpha)
 //         sf::Vertex(sf::Vector2f(changed_x, changed_y))
 //     };
 //
-//     Vector2 arrow_vector_1 (*this + (get_perpendicular (*this, CLOCKWISE_DIRECTION) - *this) / COEFF_FOR_LENGTH_ARROWS);
+//     Vector3 arrow_vector_1 (*this + (get_perpendicular (*this, CLOCKWISE_DIRECTION) - *this) / COEFF_FOR_LENGTH_ARROWS);
 //     printf ("angle2 == %lf\n", (arrow_vector_1 - *this).angle);
 //     sf::Vertex arrow_line_1[] =
 //     {
 //         sf::Vertex(sf::Vector2f(changed_x, changed_y)),
 //         sf::Vertex(sf::Vector2f((float) recalcul_x (arrow_vector_1.x, x_size_of_window), (float) recalcul_y (arrow_vector_1.y, y_size_of_window)))
 //     };
-//     Vector2 arrow_vector_2 (*this + (get_perpendicular (*this, COUNTERCLOCKWISE_DIRECTION) - *this) / COEFF_FOR_LENGTH_ARROWS);
+//     Vector3 arrow_vector_2 (*this + (get_perpendicular (*this, COUNTERCLOCKWISE_DIRECTION) - *this) / COEFF_FOR_LENGTH_ARROWS);
 //     printf ("angle == %lf\n", arrow_vector_2.angle);
 //     sf::Vertex arrow_line_2[] =
 //     {
@@ -87,94 +67,50 @@ Vector2 Vector2::rotate (double alpha)
 //     window.draw(arrow_line_2, NUM_OF_POINT_TO_LINE, sf::Lines);
 // }
 
-Vector2 operator+ (Vector2 vector_1, Vector2 vector_2)
+Vector3 operator+ (Vector3 vector_1, Vector3 vector_2)
 {
-    if (vector_1.get_vector_mode () != VECTOR_MODE_CARTESIAN)
-    {
-        vector_1.upload_cartesian_mode ();
-    }
-    if (vector_2.get_vector_mode () != VECTOR_MODE_CARTESIAN)
-    {
-        vector_2.upload_cartesian_mode ();
-    }
-
     return vector_1 += vector_2;
 }
 
-Vector2 operator- (Vector2 vector_1, Vector2 vector_2)
+Vector3 operator- (Vector3 vector_1, Vector3 vector_2)
 {
-    if (vector_1.get_vector_mode () != VECTOR_MODE_CARTESIAN)
-    {
-        vector_1.upload_cartesian_mode ();
-    }
-    if (vector_2.get_vector_mode () != VECTOR_MODE_CARTESIAN)
-    {
-        vector_2.upload_cartesian_mode ();
-    }
-
     return vector_1 -= vector_2;
 }
 
-Vector2 Vector2::operator/ (int divider)
+Vector3 Vector3::operator/ (double divider)
 {
-    if (cur_mode == VECTOR_MODE_CARTESIAN)
-    {
-        x /= divider;
-        y /= divider;
-    }
-    else
-    {
-        length /= divider;
-    }
+    x /= divider;
+    y /= divider;
+    z /= divider;
+
     return *this;
 }
 
-double Vector2::get_angle ()
+double Vector3::get_length () const
 {
-    if (cur_mode != VECTOR_MODE_POLAR)
-    {
-        this->upload_polar_mode ();
-        cur_mode = VECTOR_MODE_POLAR;
-    }
-
-    return angle;
+    return sqrt (x * x + y * y + z * z);
 }
 
-double Vector2::get_length ()
+double get_cos_between (const Vector3& vector1, const Vector3& vector2)
 {
-    if (cur_mode != VECTOR_MODE_POLAR)
-    {
-        this->upload_polar_mode ();
-        cur_mode = VECTOR_MODE_POLAR;
-    }
+    double scalar_product = vector1.get_x () * vector2.get_x () +
+                            vector1.get_y () * vector2.get_y () +
+                            vector1.get_z () * vector2.get_z ();
 
-    return length;
+    return scalar_product / (vector1.get_length () * vector2.get_length ());
 }
 
-VectorMode Vector2::get_vector_mode ()
+double Vector3::get_x () const
 {
-    return cur_mode;
+    return x;
 }
 
-void Vector2::upload_cartesian_mode ()
+double Vector3::get_y () const
 {
-    x = length * cos (ANGLE_IN_RAD (angle));
-    y = length * sin (ANGLE_IN_RAD (angle));
+    return y;
 }
 
-void Vector2::upload_polar_mode ()
+double Vector3::get_z () const
 {
-    if (compare_doubles (x, 0) != 0)
-        angle = atan (y / x);
-    else if (y > 0)
-        angle = NUM_OF_DEGREES_IN_RIGHT_ANGLE;
-    else if (y < 0)
-        angle = NUM_OF_DEGREES_IN_CIRCLE - NUM_OF_DEGREES_IN_RIGHT_ANGLE;
-
-    length = sqrt (y * y + x * x);
-}
-
-Vector2 get_perpendicular (Vector2 vector)
-{
-    return vector.rotate (NUM_OF_DEGREES_IN_RIGHT_ANGLE);
+    return z;
 }
