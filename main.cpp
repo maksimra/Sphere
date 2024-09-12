@@ -5,6 +5,8 @@
 #include "include/lighting.hpp"
 #include "include/sphere.hpp"
 
+const size_t N_BYTES_FOR_PIXEL = 4;
+
 // Спросить, не лучше ли внутри мейна константы определять
 const size_t  SIZE_X_WINDOW   = 1000;
 const size_t  SIZE_Y_WINDOW   = 1000;
@@ -36,10 +38,11 @@ int main()
 
     Lighting lighting (LIGHT_X, LIGHT_Y, LIGHT_Z, LIGHT_COLOR);
 
-    uint8_t* pixels = sphere.get_sphere_pixels (lighting, graphic_system, AMBIENT_COEFF);
+    uint8_t* pixels = (uint8_t*) calloc (graphic_system.get_x_size () * graphic_system.get_y_size () * N_BYTES_FOR_PIXEL, sizeof(uint8_t));
+
+    sphere.get_sphere_pixels (pixels, lighting, graphic_system, AMBIENT_COEFF);
     graphic_system.draw_pixels (pixels);
     graphic_system.win_display ();
-    //uint8_t* pixels = NULL; // подумать насчёт этого
 
     while (graphic_system.win_open ())
     {

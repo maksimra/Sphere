@@ -7,8 +7,6 @@
 #include <string.h>
 #include <math.h>
 
-const size_t N_BYTES_FOR_PIXEL = 4;
-
 int Sphere::get_x_center () const
 {
     return x_center_;
@@ -34,11 +32,9 @@ int Sphere::get_rgba () const
     return color_;
 }
 
-uint8_t* Sphere::get_sphere_pixels (const Lighting& lighting, const GraphicSystem& graphic_system, double ambient_coeff)
+void Sphere::get_sphere_pixels (uint8_t* pixels, const Lighting& lighting, const GraphicSystem& graphic_system, double ambient_coeff)
 {
     int pixel_color = 0;
-
-    uint8_t* pixels = (uint8_t*) calloc (graphic_system.get_x_size () * graphic_system.get_y_size () * N_BYTES_FOR_PIXEL, sizeof(uint8_t));
 
     for (size_t y_pixel_number = 0; y_pixel_number < graphic_system.get_y_size (); y_pixel_number++)
     {

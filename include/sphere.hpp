@@ -36,7 +36,7 @@ public:
     int    get_y_center () const;
     int    get_rgba     () const;
 
-    uint8_t* get_sphere_pixels (const Lighting& lighting, const GraphicSystem& graphic_system, const double ambient_coeff);
+    void get_sphere_pixels (uint8_t* pixels, const Lighting& lighting, const GraphicSystem& graphic_system, const double ambient_coeff);
 
 };
 
