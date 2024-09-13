@@ -17,23 +17,26 @@ CFLAGS ?= -O2 -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++            
 		  -Wno-varargs -Wstack-protector -fcheck-new -fsized-deallocation                    \
 		  -fstack-protector -fstrict-overflow -flto-odr-type-merging -fno-omit-frame-pointer \
 		  -Wstack-usage=20000 -pie -fPIE -Werror=vla                                         \
-		  -fsanitize=address,alignment,bool,bounds,enum,float                                \
-		  -cast-overflow,float-divide-by-zero,integer-divide-by-zero,leak,nonnull            \
-		  -attribute,null,object-size,return,returns-nonnull-attribute,shift,signed          \
+		  -fsanitize=address,alignment,bool,bounds,enum,float$                               \
+		  -cast-overflow,float-divide-by-zero,integer-divide-by-zero,leak,nonnull$           \
+		  -attribute,null,object-size,return,returns-nonnull-attribute,shift,signed$         \
 		  -integer-overflow,undefined,unreachable,vla-bound,vptr
 SRC  = ./source
 CSRC = main.cpp source/vector.cpp source/square.cpp source/sphere.cpp source/drawing.cpp     \
        source/compare_doubles.cpp source/cartesian.cpp
 COBJ = main.o vector.o square.o sphere.o drawing.o compare_doubles.o cartesian.o
 
+%.o : source/%.cpp
+	$(CC) $(CFLAGS) -c $^ -o $@
+
 .PHONY: all
 
 all: output
 
 output: $(COBJ)
-	$(CC) $^ -o $@ -lsfml-graphics -lsfml-window -lsfml-system
+	$(CC) $(CFLAGS) $^ -o $@ -lsfml-graphics -lsfml-window -lsfml-system
 
-%.o : source/%.c
+main.o: main.cpp
 	$(CC) $(CFLAGS) -c $^ -o $@
 
 clean:

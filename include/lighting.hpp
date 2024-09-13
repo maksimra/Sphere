@@ -1,7 +1,7 @@
 #ifndef LIGHTING_HPP
 #define LIGHTING_HPP
 
-#include <stdint.h>
+#include "vector.hpp"
 
 static const size_t SIZE_ONE_COLOR = 4;
 
@@ -10,9 +10,9 @@ class Lighting
     int x_;
     int y_;
     int z_;
-    int color_;
+    Vector3 color_;
 public:
-    Lighting (int x, int y, int z, int color):
+    Lighting (int x, int y, int z, Vector3 color):
               x_ (x), y_ (y), z_ (z), color_ (color) {}
 
     int get_x () const
@@ -30,7 +30,7 @@ public:
         return z_;
     }
 
-    int get_color () const
+    Vector3 get_color () const
     {
         return color_;
     }

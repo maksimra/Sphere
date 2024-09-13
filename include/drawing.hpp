@@ -3,6 +3,7 @@
 
 #include "cartesian.hpp"
 #include "sphere.hpp"
+#include <SFML/Config.hpp>
 #include <SFML/Graphics.hpp>
 #include "lighting.hpp"
 #include <assert.h>
@@ -26,7 +27,7 @@ public:
     void operator=   (const GraphicSystem& source_graphic_system);
 
     void draw_line   (int x_1, int y_1, int x_2, int y_2);
-    void draw_pixels (uint8_t* pixels);
+    void draw_pixels (unsigned int* pixels);
 
     bool win_open ();
     void win_process_event ();

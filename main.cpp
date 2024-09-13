@@ -15,11 +15,9 @@ const int     Y_CENTER        = SIZE_Y_WINDOW / 2;
 const size_t  SPHERE_RADIUS   = 400;
 const int     SPHERE_CENTER_X = 0;
 const int     SPHERE_CENTER_Y = 0;
-const int     SPHERE_COLOR    = 0xFFFF00FF;
 const int     LIGHT_X         = -500;
 const int     LIGHT_Y         = 600;
 const int     LIGHT_Z         = 700;
-const int     LIGHT_COLOR     = 0xFF00F0FF;
 const double  AMBIENT_COEFF   = 0.05;
 
 int main()
@@ -34,25 +32,30 @@ int main()
     GraphicSystem graphic_system (coordinate_system, SIZE_X_WINDOW,
                                                      SIZE_Y_WINDOW);
 
-    Sphere sphere (SPHERE_RADIUS, SPHERE_CENTER_X, SPHERE_CENTER_Y, SPHERE_COLOR);
+    /*Создать вектор с цветами для света*/
+    /*Создать вектор с цветами для сферы*/
+    /*Передать вектора в конструкторы сферы и света*/
+    /*Передать в функцию отрисовки пикселей информацию о прозрачности (или забить)*/
 
-    Lighting lighting (LIGHT_X, LIGHT_Y, LIGHT_Z, LIGHT_COLOR);
+    Vector3 sphere_color (45, 54, 89);
+    Vector3 light_color  (35, 119, 78);
 
-    uint8_t* pixels = (uint8_t*) calloc (graphic_system.get_x_size () * graphic_system.get_y_size () * N_BYTES_FOR_PIXEL, sizeof(uint8_t));
+    Sphere sphere (SPHERE_RADIUS, SPHERE_CENTER_X, SPHERE_CENTER_Y, sphere_color);
+
+    Lighting lighting (LIGHT_X, LIGHT_Y, LIGHT_Z, light_color);
+
+    unsigned char* pixels = (unsigned char*) calloc (graphic_system.get_x_size () * graphic_system.get_y_size () * N_BYTES_FOR_PIXEL, sizeof(uint8_t));
 
     sphere.get_sphere_pixels (pixels, lighting, graphic_system, AMBIENT_COEFF);
-    graphic_system.draw_pixels (pixels);
-    graphic_system.win_display ();
 
     while (graphic_system.win_open ())
     {
         graphic_system.win_process_event ();
-        // pixels = sphere.get_sphere_pixels (lighting, graphic_system);
-        // graphic_system.draw_pixels (pixels);
-        // graphic_system.win_display ();
+        graphic_system.draw_pixels (pixels);
+        graphic_system.win_display ();
     }
 
-    free (pixels); // придумать, как пофиксить
+    free (pixels);
 
     return 0;
 }

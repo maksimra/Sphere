@@ -68,7 +68,7 @@ void GraphicSystem::draw_line (int x_1, int y_1, int x_2, int y_2)
     window.draw (line, NUM_POINT_TO_LINE, sf::Lines);
 }
 
-void GraphicSystem::draw_pixels (uint8_t* pixels)
+void GraphicSystem::draw_pixels (unsigned char* pixels)
 {
     assert (pixels); // Спросить насчёт того, как проверять массив пикселей на размер
 

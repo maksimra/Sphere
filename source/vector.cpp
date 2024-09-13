@@ -86,6 +86,15 @@ Vector3 Vector3::operator/ (double divider)
     return *this;
 }
 
+Vector3  Vector3::operator* (double multiplier)
+{
+    x *= divider;
+    y *= divider;
+    z *= divider;
+
+    return *this;
+}
+
 double Vector3::get_length () const
 {
     return sqrt (x * x + y * y + z * z);
@@ -98,6 +107,13 @@ double get_cos_between (const Vector3& vector1, const Vector3& vector2)
                             vector1.get_z () * vector2.get_z ();
 
     return scalar_product / (vector1.get_length () * vector2.get_length ());
+}
+
+Vector3 multiple_of_elements (const Vector3& vector1, const Vector3& vector2)
+{
+    return Vector3 (vector1.get_x () * vector2.get_x (),
+                    vector1.get_y () * vector2.get_y (),
+                    vector1.get_z () * vector2.get_z ());
 }
 
 double Vector3::get_x () const
