@@ -37,14 +37,24 @@ public:
     int    get_x_center () const;
     int    get_y_center () const;
 
-    void get_sphere_pixels (unsigned char* pixels, const Lighting& lighting, const GraphicSystem& graphic_system, double ambient_coeff);
+    void get_sphere_pixels (uint8_t* pixels, const Lighting& lighting, const GraphicSystem& graphic_system,
+                            double ambient_coeff, int point_view_height, int glare_multiplier);
 
 };
 
 
-void set_color (int* color, const Vector3& light_color, double ambient_coeff, const Vector3& sphere_color,
+void set_color (Vector3* sum_color, const Vector3& light_color, const Vector3& sphere_color,
+                double ambient_coeff, int point_view_height, int glare_multiplier,
                 int center_sphere_x, int center_sphere_y, size_t radius,
                 int light_x, int light_y, int light_z,
-                int point_sphere_x, int point_sphere_y)
+                int point_sphere_x, int point_sphere_y);
+
+void set_pixel (uint8_t* pixels, const Vector3& pixel_color,
+                size_t x_pixel_number, size_t y_pixel_number,
+                size_t x_window_size);
+
+void fill_color (uint32_t* color, const Vector3& rgb_vector);
+
+void sphere_set_log_file (FILE* file);
 
 #endif // SPHERE_HPP

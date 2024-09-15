@@ -24,7 +24,7 @@ public:
                y_center_ (cartesian.y_center_)
     {}
 
-    void operator= (const Cartesian& source_cartesian);
+    const Cartesian& operator= (const Cartesian& source_cartesian);
 
     int get_x_center () const;
     int get_y_center () const;

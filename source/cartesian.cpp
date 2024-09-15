@@ -10,7 +10,7 @@ int Cartesian::get_y_center () const
     return y_center_;
 }
 
-void Cartesian::operator= (const Cartesian& source_cartesian)
+const Cartesian& Cartesian::operator= (const Cartesian& source_cartesian)
 {
     x_min_    = source_cartesian.x_min_;
     y_min_    = source_cartesian.y_min_;
@@ -18,4 +18,6 @@ void Cartesian::operator= (const Cartesian& source_cartesian)
     y_max_    = source_cartesian.y_max_;
     x_center_ = source_cartesian.x_center_;
     y_center_ = source_cartesian.y_center_;
+
+    return *this;
 }

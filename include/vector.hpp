@@ -2,6 +2,7 @@
 #define VECTOR_HPP
 
 #include <math.h>
+
 #include "compare_doubles.hpp"
 
 enum VectorMode
@@ -28,8 +29,9 @@ public:
 
     Vector3  operator+= (Vector3 additional_vector);
     Vector3  operator-= (Vector3 additional_vector);
-    Vector3  operator/  (double divider);
-    Vector3  operator*  (double multiplier);
+    Vector3  operator*= (double multiplier);
+    Vector3  operator/  (double divider)    const;
+    Vector3  operator*  (double multiplier) const;
     Vector3& operator=  (const Vector3& source_vector);
 
     double get_length () const;
@@ -42,5 +44,7 @@ Vector3 multiple_of_elements (const Vector3& vector1, const Vector3& vector2);
 Vector3 operator+            (Vector3 vector_1, Vector3 vector_2);
 Vector3 operator-            (Vector3 vector_1, Vector3 vector_2);
 double  get_cos_between      (const Vector3& vector1, const Vector3& vector2);
+
+void vector_set_log_file (FILE* file);
 
 #endif // VECTOR_HPP

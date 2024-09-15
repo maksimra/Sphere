@@ -11,6 +11,7 @@ class Lighting
     int y_;
     int z_;
     Vector3 color_;
+
 public:
     Lighting (int x, int y, int z, Vector3 color):
               x_ (x), y_ (y), z_ (z), color_ (color) {}

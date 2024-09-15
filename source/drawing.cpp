@@ -1,16 +1,26 @@
+#include <string.h>
+#include <stdio.h>
+
 #include "../include/drawing.hpp"
 #include "../include/vector.hpp"
 #include "../include/sphere.hpp"
-#include <string.h>
 
 const size_t N_BYTES_FOR_PIXEL = 4;
 
-size_t GraphicSystem::get_x_center () const
+static FILE* log_file = stderr;
+
+void drawing_set_log_file (FILE* file)
+{
+    if (file)
+        log_file = file;
+}
+
+int GraphicSystem::get_x_center () const
 {
     return coordinate_system_.get_x_center ();
 }
 
-size_t GraphicSystem::get_y_center () const
+int GraphicSystem::get_y_center () const
 {
     return coordinate_system_.get_y_center ();
 }
@@ -27,19 +37,19 @@ size_t GraphicSystem::get_y_size () const
 
 int recalcul_x (Cartesian coordinate_system, int x, size_t size_x_win)
 {
-    return size_x_win / 2 + coordinate_system.get_x_center () + x;
+    return (int) size_x_win / 2 + coordinate_system.get_x_center () + x;
 }
 
 int recalcul_y (Cartesian coordinate_system, int y, size_t size_y_win)
 {
-    return size_y_win / 2 - (coordinate_system.get_y_center () + y);
+    return (int) size_y_win / 2 - (coordinate_system.get_y_center () + y);
 }
 
 GraphicSystem::GraphicSystem (const Cartesian& coordinate_system, size_t size_x, size_t size_y):
                               coordinate_system_ (coordinate_system),
                               size_x_ (size_x),
                               size_y_ (size_y),
-                              window (sf::VideoMode (size_x, size_y), "MyWindow")
+                              window (sf::VideoMode ((unsigned int) size_x, (unsigned int) size_y), "MyWindow")
                               {}
 
 // void GraphicSystem::operator= (const GraphicSystem& source_graphic_system)
@@ -61,8 +71,8 @@ void GraphicSystem::draw_line (int x_1, int y_1, int x_2, int y_2)
 
     sf::Vertex line[] =
     {
-        sf::Vertex (sf::Vector2f (relative_x_1, relative_y_1)),
-        sf::Vertex (sf::Vector2f (relative_x_2, relative_y_2))
+        sf::Vertex (sf::Vector2f ((float) relative_x_1, (float) relative_y_1)),
+        sf::Vertex (sf::Vector2f ((float) relative_x_2, (float) relative_y_2))
     };
 
     window.draw (line, NUM_POINT_TO_LINE, sf::Lines);
@@ -70,53 +80,21 @@ void GraphicSystem::draw_line (int x_1, int y_1, int x_2, int y_2)
 
 void GraphicSystem::draw_pixels (unsigned char* pixels)
 {
-    assert (pixels); // Спросить насчёт того, как проверять массив пикселей на размер
-
-    // for (size_t i = 0; i < size_x_ + size_y_; i++)
-    // {
-    //     printf ("%d ", pixels[i]);
-    // }
+    assert (pixels);
+    window.clear();
 
     sf::Texture texture;
-    texture.create(size_x_, size_y_);
+    texture.create((unsigned int) size_x_, (unsigned int) size_y_);
     texture.update (pixels);
     sf::Sprite sprite(texture);
     window.draw (sprite);
+    window.display();
 }
 
 void GraphicSystem::win_clear ()
 {
     window.clear (sf::Color::Blue);
 }
-
-// Пока сделал просто равномерное раскрашивание сферы. Присутствует говнокод
-//void GraphicSystem::draw_sphere (Sphere sphere, Lighting lighting, int x_center, int y_center)
-//{
-//    uint8_t* pixels = (uint8_t*) calloc (size_x_ * size_y_ * N_BYTES_FOR_PIXEL, sizeof(uint8_t));
-//
-//    for (size_t y_pixel_number; y_pixel_number < size_y_; y_pixel_number++)
-//    {
-//        for (size_t x_pixel_number; x_pixel_number < size_x_; x_pixel_number++)
-//        {
-//            if (SQUARE (sphere.get_x_center() + coordinate_system_.get_x_center () - x_pixel_number) +
-//                SQUARE (coordinate_system_.get_y_center () - sphere.get_y_center () - y_pixel_number) <=
-//                SQUARE (sphere.get_radius))
-//            {
-//                int green = 0xFF00FF00;
-//                memcpy (pixels + 4 * x_pixel_number + y_pixel_number, &green, sizeof (int));
-//                continue;
-//            }
-//            int black = 0x00000000;
-//            memcpy (pixels + 4 * x_pixel_number + y_pixel_number, &green, sizeof (int));
-//        }
-//    }
-//
-//    sf::Texture texture;
-//    texture.create(size_x_, size_y_);
-//    texture.update (pixels);
-//    sf::Sprite sprite(texture);
-//    window.draw (sprite);
-//}
 
 void GraphicSystem::win_process_event ()
 {
