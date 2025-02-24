@@ -59,17 +59,10 @@ int main()
                               AMBIENT_COEFF, POINT_VIEW_HEIGHT, GLARE_MULTIPLIER);
     while(1) {
         graphic_system.draw_pixels (pixels);
+        if (!graphic_system.win_process_event ())
+            break;
+
         graphic_system.win_display ();
-    }
-
-    for (int a = 0; a < graphic_system.get_x_size () * graphic_system.get_y_size (); a++)
-    {
-        printf ("0x%x\n", *((int*) pixels + a));
-    }
-
-    while (graphic_system.win_open ())
-    {
-        graphic_system.win_process_event ();
     }
 
     free (pixels);

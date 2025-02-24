@@ -75,10 +75,6 @@ void Sphere::get_sphere_pixels (uint8_t* pixels, const Lighting& lighting, const
             }
         }
     }
-    for (int a = 0; a < graphic_system.get_x_size () * graphic_system.get_y_size (); a++)
-    {
-        PRINTF ("HUI 0x%x\n", *((uint32_t*) pixels + a));
-    }
 }
 
 void set_pixel (uint8_t* pixels, const Vector3& pixel_color,
@@ -94,13 +90,11 @@ void set_pixel (uint8_t* pixels, const Vector3& pixel_color,
                                  blue_channel,
                                  UCHAR_MAX}; // <---- Transparency
 
-    PRINTF ("color_channel[4] = 0x%x\n", *((uint32_t*) color_channels));
-
     for (size_t n_channel = 0; n_channel < 4; n_channel++)
     {
         pixels[4 * (x_pixel_number + y_pixel_number * x_window_size) + n_channel] = color_channels[n_channel];
     }
-    PRINTF ("pixels[%d] = 0x%x\n", 4 * (x_pixel_number + y_pixel_number * x_window_size),
+    PRINTF ("pixels[%zu] = 0x%x\n", 4 * (x_pixel_number + y_pixel_number * x_window_size),
                                   *(uint32_t*) (pixels + 4 * (x_pixel_number + y_pixel_number * x_window_size)));
 }
 
@@ -144,8 +138,6 @@ void set_color (Vector3* sum_color, const Vector3& light_color, const Vector3& s
         viewer_and_light_cos = 0;
 
     double glare_coeff = pow (viewer_and_light_cos, glare_multiplier);
-
-    printf ("glare_coeff == %lf\n", glare_coeff);
 
     *sum_color = (multiple_of_elements (sphere_color, light_color) * (sphere_and_light_cos + ambient_coeff)
                  + light_color * glare_coeff) * UCHAR_MAX;

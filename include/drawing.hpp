@@ -10,9 +10,6 @@
 
 const size_t NUM_POINT_TO_LINE = 2;
 
-// сначала стандартные хедеры, потом библиотечные, потом свои
-// в .cpp сначала свой хедер, потом в том же порядке
-
 class GraphicSystem
 {
     Cartesian coordinate_system_;
@@ -29,8 +26,8 @@ public:
     void draw_pixels (uint8_t* pixels);
 
     bool win_open ();
-    void win_process_event ();
     void win_display ();
+    bool win_process_event ();
     void win_clear ();
 
     size_t get_x_size   () const;
