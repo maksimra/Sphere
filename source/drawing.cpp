@@ -97,7 +97,7 @@ bool GraphicSystem::win_process_event ()
             return false;
         }
     }
-    return true
+    return true;
 }
 
 bool GraphicSystem::win_open ()
