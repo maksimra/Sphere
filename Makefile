@@ -31,7 +31,7 @@ COBJ = $(OBJ)/main.o $(OBJ)/vector.o $(OBJ)/square.o $(OBJ)/sphere.o $(OBJ)/draw
 
 .PHONY: all
 
-all: output
+all: output build
 
 output: $(COBJ)
 	$(CC) $(CFLAGS) $^ -o $@ -lsfml-graphics -lsfml-window -lsfml-system
@@ -39,12 +39,12 @@ output: $(COBJ)
 $(OBJ)/main.o: main.cpp
 	$(CC) $(CFLAGS) -c $^ -o $@
 
-$(OBJ)/%.o: $(OBJ) source/%.cpp
+$(OBJ)/%.o: source/%.cpp
 	$(CC) $(CFLAGS) -c $^ -o $@
 
-$(OBJ):
+build:
 	mkdir $(OBJ)
 
 clean:
 	rm -rf output
-	rm -rf *.o
+	rm -rf $(OBJ)/*.o
