@@ -31,7 +31,7 @@ COBJ = $(OBJ)/main.o $(OBJ)/vector.o $(OBJ)/square.o $(OBJ)/sphere.o $(OBJ)/draw
 
 .PHONY: all
 
-all: output build
+all: build output
 
 output: $(COBJ)
 	$(CC) $(CFLAGS) $^ -o $@ -lsfml-graphics -lsfml-window -lsfml-system
