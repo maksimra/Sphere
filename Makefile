@@ -22,12 +22,12 @@ CFLAGS ?= -O2 -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++            
 		  -attribute,null,object-size,return,returns-nonnull-attribute,shift,signed$         \
 		  -integer-overflow,undefined,unreachable,vla-bound,vptr
 SRC  = ./source
+OBJ  = build
 CSRC = main.cpp source/vector.cpp source/square.cpp source/sphere.cpp source/drawing.cpp     \
        source/compare_doubles.cpp source/cartesian.cpp
-COBJ = main.o vector.o square.o sphere.o drawing.o compare_doubles.o cartesian.o
+COBJ = $(OBJ)/main.o $(OBJ)/vector.o $(OBJ)/square.o $(OBJ)/sphere.o $(OBJ)/drawing.o \
+       $(OBJ)/compare_doubles.o      $(OBJ)/cartesian.o
 
-%.o : source/%.cpp
-	$(CC) $(CFLAGS) -c $^ -o $@
 
 .PHONY: all
 
@@ -36,8 +36,14 @@ all: output
 output: $(COBJ)
 	$(CC) $(CFLAGS) $^ -o $@ -lsfml-graphics -lsfml-window -lsfml-system
 
-main.o: main.cpp
+$(OBJ)/main.o: main.cpp
 	$(CC) $(CFLAGS) -c $^ -o $@
+
+$(OBJ)/%.o: $(OBJ) source/%.cpp
+	$(CC) $(CFLAGS) -c $^ -o $@
+
+$(OBJ):
+	mkdir $(OBJ)
 
 clean:
 	rm -rf output
