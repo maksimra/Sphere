@@ -16,12 +16,12 @@ const int    Y_CENTER          = SIZE_Y_WINDOW / 2;
 const size_t SPHERE_RADIUS     = 300;
 const int    SPHERE_CENTER_X   = 0;
 const int    SPHERE_CENTER_Y   = 0;
-const int    LIGHT_X           = -250;
+const int    LIGHT_X           = -500;
 const int    LIGHT_Y           = 100;
 const int    LIGHT_Z           = 1000;
 const int    POINT_VIEW_HEIGHT = 800;
 const int    GLARE_MULTIPLIER  = 8;
-const double AMBIENT_COEFF     = 0.1;
+const double AMBIENT_COEFF     = 0.22;
 
 int main()
 {
@@ -45,8 +45,8 @@ int main()
     GraphicSystem graphic_system (coordinate_system, SIZE_X_WINDOW,
                                                      SIZE_Y_WINDOW);
 
-    Vector3 sphere_color (0.7, 0.1, 0.6);
-    Vector3 light_color  (1, 1, 1.0);
+    Vector3 sphere_color (0.7, 0.4, 0.8);
+    Vector3 light_color  (0.6, 0.7, 1.0);
 
     Sphere sphere (SPHERE_RADIUS, SPHERE_CENTER_X, SPHERE_CENTER_Y, sphere_color);
 

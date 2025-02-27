@@ -94,8 +94,6 @@ void set_pixel (uint8_t* pixels, const Vector3& pixel_color,
     {
         pixels[4 * (x_pixel_number + y_pixel_number * x_window_size) + n_channel] = color_channels[n_channel];
     }
-    PRINTF ("pixels[%zu] = 0x%x\n", 4 * (x_pixel_number + y_pixel_number * x_window_size),
-                                  *(uint32_t*) (pixels + 4 * (x_pixel_number + y_pixel_number * x_window_size)));
 }
 
 void set_color (Vector3* sum_color, const Vector3& light_color, const Vector3& sphere_color,
@@ -141,7 +139,4 @@ void set_color (Vector3* sum_color, const Vector3& light_color, const Vector3& s
 
     *sum_color = (multiple_of_elements (sphere_color, light_color) * (sphere_and_light_cos + ambient_coeff)
                  + light_color * glare_coeff) * UCHAR_MAX;
-
-    PRINTF ("sum_color:\nR = %lf\nG = %lf\nB = %lf\n",
-            (*sum_color).get_x (), (*sum_color).get_y (), (*sum_color).get_z ());
 }
